@@ -26,8 +26,9 @@ end
 %j = 3;
 for i = 1:7:1664
     frame = imread(sprintf('./output/frame_%04d.jpg', i));
-    frame1 = imcrop(frame, [281,1,719,719]);
-    imshow(frame1)
+    %frame1 = imcrop(frame, [281,1,719,719]);
+    annotatedFrame = insertShape(frame, 'rectangle',[281,1,719,719]);
+    imshow(annotatedFrame)
 end
 
 %%
@@ -38,3 +39,14 @@ for i = 1:34:1664
     v.writeVideo(imresize(frame,0.5));
 end
 close(v)
+
+%%
+v = VideoReader('./vid416.avi');
+for i = 1:1664
+    if hasFrame(v)
+        frame = readFrame(v);
+        if mod(i,34)==1
+            imwrite(frame, sprintf('./imgs416/frame_%04d.jpg', i))
+        end
+    end
+end
